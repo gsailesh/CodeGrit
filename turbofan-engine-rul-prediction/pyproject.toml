@@ -1,0 +1,13 @@
+[project]
+name = "turbofan-engine-rul-prediction"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "altair>=6.1.0",
+    "kagglehub>=1.0.0",
+    "matplotlib>=3.10.9",
+    "polars>=1.40.1",
+    "ruff>=0.15.12",
+]
