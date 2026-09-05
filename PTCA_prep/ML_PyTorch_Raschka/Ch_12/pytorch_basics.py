@@ -1,3 +1,7 @@
+"""
+For more operations and functions, refer: https://pytorch.org/docs/stable/index.html.
+"""
+
 import torch
 import numpy as np
 from pprint import pprint
@@ -132,4 +136,58 @@ tensor([[0.8823, 0.9150, 0.3829],
 tensor([1.3275, 1.1974])
 tensor([1.3033, 0.9948, 0.7125])
 tensor([1.3275, 1.1974])
+"""
+# ---
+"""
+t_split = torch.chunk(torch.rand(2, 5), 2) # TODO: Check documentation for chunk arguments. What is '2'?
+
+for item in t_split:
+    pprint(item.numpy().shape) # 2 chunks of dim=(1, 5)
+"""
+
+"""
+(1, 5)
+(1, 5)
+"""
+# ---
+
+"""
+t_another_split = torch.split(torch.rand(3, 5), split_size_or_sections=[1, 2]) # Splits should add up to dim-0 or the outer dimension.
+for item in t_another_split:
+    pprint(item.numpy().shape) # (1, 5) and (2, 5)
+"""
+
+"""
+(1, 5)
+(2, 5)
+"""
+# ---
+
+o = torch.ones(3)
+z = torch.zeros(2)
+
+a = torch.rand(3, 2)
+b = torch.rand(5, 2)
+
+pprint(torch.cat([o, z], axis=0).shape) # concatenates and forms a longer vector, works only for `axis=0` or `axis=-1`
+pprint(torch.cat([o, z], axis=-1).shape)
+
+# For arrays
+pprint(torch.cat([a, b], axis=0).shape) # tensor sizes must match along the dimension or axis chosen, then it stacks them
+pprint(torch.cat([a, b], axis=-2).shape)
+
+# Stacking
+pprint(torch.stack([z, z], axis=0).shape) # tensor sizes must be equal
+pprint(torch.stack([a, a], axis=0).shape)
+pprint(torch.stack([b, b], axis=0).shape)
+
+
+"""
+torch.Size([5])
+torch.Size([5])
+torch.Size([8, 2])
+torch.Size([8, 2])
+torch.Size([2, 2])
+torch.Size([2, 3, 2])
+torch.Size([2, 5, 2])
 """
