@@ -52,3 +52,73 @@ for epoch in range(num_epochs):
         bias.grad.zero_()
     if epoch % log_epochs == 0:
         print(f"Epoch: {epoch} | Loss: {loss.item():.4f}")
+
+
+## Testing
+
+X_test = np.linspace(0, 9, num=100, dtype="float32").reshape(
+    -1, 1
+)  # reshape(-1, 1): -1 infers dimension automatically, 1 makes it a column vector
+X_test_norm = (X_test - np.mean(X_train)) / np.std(
+    X_train
+)  # Use X_train stats to avoid data leakage; test set must use training distribution
+X_test_norm = torch.from_numpy(X_test_norm)
+
+y_pred = (
+    model_fn(X_test_norm).detach().numpy()
+)  # detach() removes gradient tracking; numpy() converts tensor to NumPy for plotting
+
+# Visualize
+import matplotlib.pyplot as plt
+
+fig = plt.figure(figsize=(13, 5))
+ax = fig.add_subplot(1, 2, 1)  # 1x2 grid: 1 row, 2 columns, subplot position 1
+plt.plot(X_train_norm, y_train, "o", markersize=10)
+plt.plot(X_test_norm, y_pred, "--", lw=3)  # lw=3: line width of 3 points
+plt.legend(["Training examples", "Linear Regression"], fontsize=15)
+ax.set_xlabel("X", size=15)
+ax.set_ylabel("y", size=15)
+ax.tick_params(axis="both", which="major", labelsize=15)
+plt.show()
+
+
+"""
+
+## Credit to Claude
+
+    y
+    |
+  9 |                                    ● (test pred)
+  8 |                                 ● ╱╱
+  7 |                              ● ╱╱
+  6 |                           ● ╱╱
+  5 |                        ● ╱╱
+  4 |                     ● ╱╱
+  3 |                  ● ╱╱
+  2 |               ● ╱╱
+  1 |            ● ╱╱
+  0 |─────────────●╱╱─────────────────── X
+ -1 |          ● ╱╱
+ -2 |       ● ╱╱
+    |_________________________________
+   -1.5  -1.0  -0.5  0.0  0.5  1.0  1.5
+
+
+Legend:
+●    Training examples
+╱╱   Linear Regression fit line
+
+## Key Observations
+
+- **Training Data**: 10 dots representing observed data points
+- **Model Fit**: Dashed line representing the learned linear relationship (W*X + b)
+- **Pattern**: Strong positive linear correlation between X and y
+- **Residuals**: Some data points deviate from the fitted line, showing typical regression error
+
+## Model Equation
+
+`ŷ = W*X + b`
+
+where W (weight) and b (bias) are learned parameters via gradient descent.
+
+"""
