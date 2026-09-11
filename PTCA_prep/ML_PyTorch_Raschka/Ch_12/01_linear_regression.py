@@ -122,3 +122,28 @@ Legend:
 where W (weight) and b (bias) are learned parameters via gradient descent.
 
 """
+
+
+## ---
+
+print(
+    "#\n\n\n-----------------------\n\nPyTorch variant\n\n-----------------------\n\n\n"
+)
+
+loss_fn_pyt = torch.nn.MSELoss(reduction="mean")
+input_size = 1
+output_size = 1
+
+model_fn_pyt = torch.nn.Linear(input_size, output_size)
+optimizer = torch.optim.SGD(model_fn_pyt.parameters(), lr=learning_rate)
+
+for epoch in range(num_epochs):
+    for X_batch, y_batch in train_dl:
+        pred = model_fn_pyt(X_batch)[:, 0]
+        loss = loss_fn(pred, y_batch)
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+
+    if epoch % log_epochs == 0:
+        print(f"Epoch {epoch} | Loss: {loss.item():.4f}")
