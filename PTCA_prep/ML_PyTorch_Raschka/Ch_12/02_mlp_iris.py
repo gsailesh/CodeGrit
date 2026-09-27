@@ -96,3 +96,15 @@ pred_test = flower_model(X_test_norm)
 correct = (torch.argmax(pred_test, dim=1) == y_test).float()
 test_acc = correct.mean()
 print(f"Test accuracy: {test_acc:.4f}")
+
+# path = "iris_classifier.pt"
+# torch.save(path)
+
+# reload_model = torch.load(path)
+
+# reload_model.eval()
+# pred_new = reload_model(X_test_norm)
+
+# correct_new = (torch.argmax(pred_new, dim=1) == y_test).float()
+# acc_new = correct_new.mean()
+# print(f"Test accuracy from reloaded model: {acc_new:.4f}")
